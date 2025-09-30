@@ -4,6 +4,14 @@ author: Pixl8 Group
 branding:
   icon: 'arrow-up-circle'
   color: 'blue'
+inputs:
+  TRANSLATIONS_ENDPOINT:
+    description: "Translations API endpoint"
+    required: false
+    default: "https://translations.pixl8.cloud/api/translations/v1"
+  TRANSLATIONS_API_KEY:
+    description: "API key for translations service"
+    required: false
 runs:
   using: "composite"
   steps:
@@ -32,6 +40,11 @@ runs:
           exit 0
         fi
 
+        if [[ -z "${{ inputs.TRANSLATIONS_API_KEY }}" ]]; then
+          echo "No Translations API key provided - skipping translations push"
+          exit 0
+        fi
+
         PROJ_SLUG="${{ inputs.project-id || github.event.repository.name }}"
         PROJ_SLUG=$(echo "$PROJ_SLUG" | tr '[:upper:]' '[:lower:]')
 
@@ -40,8 +53,8 @@ runs:
         echo "Version: $TRANSLATION_VERSION_NUMBER"
         echo "Source:  $SOURCEDIR"
 
-        box pixl8 translations setEndpoint endpoint="${{ secrets.TRANSLATIONS_ENDPOINT || 'https://translations.pixl8.cloud/api/translations/v1' }}"
-        box pixl8 translations setCredentials apiKey="${{ secrets.TRANSLATIONS_API_KEY }}"
+        box pixl8 translations setEndpoint endpoint="${{ inputs.TRANSLATIONS_ENDPOINT }}"
+        box pixl8 translations setCredentials apiKey="${{ inputs.TRANSLATIONS_API_KEY }}"
         box pixl8 translations push projectSlug="$PROJ_SLUG" projectVersion="$TRANSLATION_VERSION_NUMBER" sourceDirectory="$SOURCEDIR"
 
       shell: bash
