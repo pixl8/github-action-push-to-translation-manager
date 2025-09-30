@@ -17,7 +17,7 @@ runs:
   steps:
     - id: translation-manager
       run: |
-        GIT_BRANCH="${GITHUB_REF_NAME:-unknown-branch}"
+        GIT_BRANCH=${GITHUB_REF##*/}
 
         if [[ $GIT_BRANCH == v* ]]; then
           VERSION_NUMBER="${GIT_BRANCH//v}"
