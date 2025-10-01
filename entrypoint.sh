@@ -8,9 +8,14 @@ else
   VERSION_NUMBER="${GIT_BRANCH//release-}"
 fi
 
-if [[ -z "$INPUT_TRANSLATIONS_ENDPOINT" ]] || [[ -z "$INPUT_TRANSLATIONS_API_KEY" ]] ; then
-	echo "Translation manager environment variables not set. Please set environment variables to use this action."
-	exit 1
+if [[ -z "$INPUT_TRANSLATIONS_ENDPOINT" ]] ; then
+	echo "Translation manager endpoint environment variables not set. Please set the endpoint variables to use this action."
+	exit 0
+fi
+
+if [[ -z "$INPUT_TRANSLATIONS_API_KEY" ]] ; then
+	echo "Translation manager API key environment variables not set. Please set API key variables to use this action."
+	exit 0
 fi
 
 TRANSLATION_VERSION_NUMBER=$(echo "$VERSION_NUMBER" | sed 's/\([0-9]\+\.[0-9]\+\)\.[0-9]\+/\1.0/')
