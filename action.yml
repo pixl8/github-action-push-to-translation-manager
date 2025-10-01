@@ -13,48 +13,5 @@ inputs:
     description: "API key for translations service"
     required: false
 runs:
-  using: "composite"
-  steps:
-    - id: translation-manager
-      run: |
-        GIT_BRANCH=${GITHUB_REF##*/}
-
-        if [[ $GIT_BRANCH == v* ]]; then
-          VERSION_NUMBER="${GIT_BRANCH//v}"
-        else
-          VERSION_NUMBER="${GIT_BRANCH//release-}"
-        fi
-
-        TRANSLATION_VERSION_NUMBER=$(echo "$VERSION_NUMBER" | sed 's/\([0-9]\+\.[0-9]\+\)\.[0-9]\+/\1.0/')
-
-        SOURCEDIR=""
-        for dir in "$PWD/i18n" "$PWD/system/i18n"; do
-          if [[ -d $dir ]]; then
-            SOURCEDIR=$dir
-            break
-          fi
-        done
-
-        if [[ -z $SOURCEDIR ]]; then
-          echo "No i18n directory found - cancelling translations push"
-          exit 0
-        fi
-
-        if [[ -z "${{ inputs.TRANSLATIONS_API_KEY }}" ]]; then
-          echo "No Translations API key provided - skipping translations push"
-          exit 0
-        fi
-
-        PROJ_SLUG="${{ inputs.project-id || github.event.repository.name }}"
-        PROJ_SLUG=$(echo "$PROJ_SLUG" | tr '[:upper:]' '[:lower:]')
-
-        echo "Pushing translations to Translation Manager"
-        echo "Project: $PROJ_SLUG"
-        echo "Version: $TRANSLATION_VERSION_NUMBER"
-        echo "Source:  $SOURCEDIR"
-
-        box pixl8 translations setEndpoint endpoint="${{ inputs.TRANSLATIONS_ENDPOINT }}"
-        box pixl8 translations setCredentials apiKey="${{ inputs.TRANSLATIONS_API_KEY }}"
-        box pixl8 translations push projectSlug="$PROJ_SLUG" projectVersion="$TRANSLATION_VERSION_NUMBER" sourceDirectory="$SOURCEDIR"
-
-      shell: bash
+  using: 'docker'
+  image: 'Dockerfile'
