@@ -11,7 +11,7 @@ inputs:
     default: "https://translations.pixl8.cloud/api/translations/v1"
   TRANSLATIONS_API_KEY:
     description: "API key for translations service"
-    required: false
+    required: true
 runs:
   using: 'docker'
   image: 'Dockerfile'
