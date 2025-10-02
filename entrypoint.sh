@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 GIT_BRANCH=${GITHUB_REF##*/}
 
@@ -33,7 +33,7 @@ if [[ -z $SOURCEDIR ]]; then
   exit 0
 fi
 
-PROJ_SLUG="${{ inputs.project-id || github.event.repository.name }}"
+PROJ_SLUG="${{ github.event.repository.name }}"
 PROJ_SLUG=$(echo "$PROJ_SLUG" | tr '[:upper:]' '[:lower:]')
 
 echo "Pushing translations to Translation Manager"
