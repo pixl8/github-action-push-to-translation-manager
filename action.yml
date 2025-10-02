@@ -5,13 +5,13 @@ branding:
   icon: 'arrow-up-circle'
   color: 'blue'
 inputs:
-  TRANSLATIONS_ENDPOINT:
+  translations_endpoint:
     description: "Translations API endpoint"
     required: false
     default: "https://translations.pixl8.cloud/api/translations/v1"
-  TRANSLATIONS_API_KEY:
+  translations_api_key:
     description: "API key for translations service"
-    required: true
+    required: false
 runs:
   using: 'docker'
   image: 'Dockerfile'
