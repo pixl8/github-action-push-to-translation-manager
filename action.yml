@@ -12,6 +12,9 @@ inputs:
   translations_api_key:
     description: "API key for translations service"
     required: false
+  project_slug:
+    description: "Custom project slug (optional - will auto-generate from repository name if not provided)"
+    required: false
 runs:
   using: 'docker'
   image: 'Dockerfile'

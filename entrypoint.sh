@@ -33,8 +33,13 @@ if [[ -z $SOURCEDIR ]]; then
   exit 0
 fi
 
-PROJ_SLUG=$(echo "$GITHUB_REPOSITORY" | cut -d'/' -f2)
-PROJ_SLUG=$(echo "$PROJ_SLUG" | tr '[:upper:]' '[:lower:]')
+# Use custom project slug if provided, otherwise auto-generate from repository name
+if [[ -n "$INPUT_PROJECT_SLUG" ]]; then
+  PROJ_SLUG="$INPUT_PROJECT_SLUG"
+else
+  PROJ_SLUG=$(echo "$GITHUB_REPOSITORY" | cut -d'/' -f2)
+  PROJ_SLUG=$(echo "$PROJ_SLUG" | tr '[:upper:]' '[:lower:]')
+fi
 
 echo "Pushing translations to Translation Manager"
 echo "Project: $PROJ_SLUG"
