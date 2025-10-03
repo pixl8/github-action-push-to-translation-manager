@@ -33,7 +33,7 @@ if [[ -z $SOURCEDIR ]]; then
   exit 0
 fi
 
-PROJ_SLUG="${{ github.event.repository.name }}"
+PROJ_SLUG=$(echo "$GITHUB_REPOSITORY" | cut -d'/' -f2)
 PROJ_SLUG=$(echo "$PROJ_SLUG" | tr '[:upper:]' '[:lower:]')
 
 echo "Pushing translations to Translation Manager"
